@@ -13,8 +13,10 @@ class RecordManager{
     }
 
     public function makeArray2DUnique($twoDimArray){
+
         $out = [];
         $keys = array_keys($twoDimArray[0]);
+
         foreach($keys as $key){
             $out[$key] = $this->getColumnValuesUnique($key, $twoDimArray);
         }
@@ -36,6 +38,16 @@ class RecordManager{
         $values = $this->getColumnValuesUnique($key, $array);
         foreach($values as $val){
             $out[$val] = $this->selectArrayRows($key, $val, $array);
+        }
+        return $out;
+    }
+
+    public function splitOnKeyUnique($key, $array){
+        $out = [];
+        $values = $this->getColumnValuesUnique($key, $array);
+        $esps = $this->splitOnKey($key, $array);
+        foreach ($values as $val){
+            $out[$val] = $this->makeArray2DUnique($esps[$val]);
         }
         return $out;
     }
