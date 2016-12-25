@@ -107,4 +107,32 @@ class RecordManagerTest extends TestCase
         $this->assertEquals($results, $truth);
     }
 
+    public function testSplitOnKey()
+    {
+        $array = [
+            ["car" => "chevy", "fruit"=> "apple", "vegetable" =>"kale"],
+            ["car"=>"chevy", "fruit"=>"pear", "vegetable" => "kale"],
+            ["car" => "bmw", "fruit"=> "pear", "vegetable" =>"corn"],
+            ["car"=>"jeep", "fruit"=>"orange", "vegetable" => "kale"]
+        ];
+
+          $truth = [
+            'chevy' => [
+                ["car" => "chevy", "fruit"=> "apple", "vegetable" =>"kale"],
+                ["car"=>"chevy", "fruit"=>"pear", "vegetable" => "kale"],
+            ],
+            'bmw' =>  [
+                ["car" => "bmw", "fruit"=> "pear", "vegetable" =>"corn"]
+            ],
+            'jeep' => [
+                ["car"=>"jeep", "fruit"=>"orange", "vegetable" => "kale"]
+            ]
+        ];
+
+        $results = $this->manager->splitOnKey('car', $array);
+        echo var_dump($results);
+        //echo var_dump($truth);
+        $this->assertEquals($results, $truth);
+    }
+
 }

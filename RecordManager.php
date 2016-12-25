@@ -30,4 +30,13 @@ class RecordManager{
         }
         return $out;
     }
+
+    public function splitOnKey($key, $array){
+        $out = [];
+        $values = $this->getColumnValuesUnique($key, $array);
+        foreach($values as $val){
+            $out[$val] = $this->selectArrayRows($key, $val, $array);
+        }
+        return $out;
+    }
 }
