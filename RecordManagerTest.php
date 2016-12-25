@@ -142,16 +142,23 @@ class RecordManagerTest extends TestCase
             ["car"=>"jeep", "fruit"=>"orange", "vegetable" => "kale"]
         ];
 
-        $truth = [
-            "chevy" => ["car" => ["chevy"], "fruit"=> ["apple","pear"], "vegetable" =>["kale"]],
-            "bmw" => ["car" => ["bmw"], "fruit"=> ["pear"], "vegetable" =>["corn"]],
-            "jeep" => ["car"=>["jeep"], "fruit"=>["orange"], "vegetable" => ["kale"]]
+        $truth_car = [
+            ["car" => ["chevy"], "fruit"=> ["apple","pear"], "vegetable" =>["kale"]],
+            ["car" => ["bmw"], "fruit"=> ["pear"], "vegetable" =>["corn"]],
+            ["car"=>["jeep"], "fruit"=>["orange"], "vegetable" => ["kale"]]
         ];
 
-         //$stuff = $this->manager->makeArray2DUnique($truth['chevy']);
-         //echo var_dump($stuff);
+        $truth_fruit = [
+            ["car" => ["chevy"], "fruit"=> ["apple"], "vegetable" =>["kale"]],
+            ["car"=>["chevy", "bmw"], "fruit"=>["pear"], "vegetable" => ["kale","corn"]],
+            ["car"=>["jeep"], "fruit"=>["orange"], "vegetable" => ["kale"]]
+        ];
+
         $results = $this->manager->splitOnKeyUnique('car', $array);
-        $this->assertEquals($results, $truth);
+        $this->assertEquals($results, $truth_car);
+
+        $results = $this->manager->splitOnKeyUnique('fruit', $array);
+        $this->assertEquals($results, $truth_fruit);
     }
 
 }

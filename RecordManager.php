@@ -47,7 +47,7 @@ class RecordManager{
         $values = $this->getColumnValuesUnique($key, $array);
         $esps = $this->splitOnKey($key, $array);
         foreach ($values as $val){
-            $out[$val] = $this->makeArray2DUnique($esps[$val]);
+            $out[] = $this->makeArray2DUnique($esps[$val]);
         }
         return $out;
     }
