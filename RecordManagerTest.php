@@ -1,6 +1,9 @@
 <?php
+/*
+* Testing namespace is defined locally on phpunit install
+* To run tests: "phpunit --verbose --debug RecordManagerTest.php"
+*/
 use PHPUnit\Framework\TestCase;
-
 require_once "./RecordManager.php";
 
 class RecordManagerTest extends TestCase
@@ -28,7 +31,7 @@ class RecordManagerTest extends TestCase
             'jeep'
         ];
 
-        $results = $this->manager->getColumnValues('car', $array);
+        $results = $this->manager->getArrayColumnValues('car', $array);
         $this->assertEquals($results, $truth);
     }
 
@@ -36,7 +39,7 @@ class RecordManagerTest extends TestCase
     {
         $array = [
             ["car" => "chevy", "fruit"=> "apple", "vegetable" =>"kale"],
-            ["car"=>"chevy", "fruit"=>"pear", "vegetable" => "kale"],
+            ["car"=>"chevy", "fruit"=>"pear", "vegetable" => NULL],
             ["car" => "bmw", "fruit"=> "pear", "vegetable" =>"corn"],
             ["car"=>"jeep", "fruit"=>"orange", "vegetable" => "kale"]
         ];
@@ -47,7 +50,7 @@ class RecordManagerTest extends TestCase
             'jeep'
         ];
 
-        $results = $this->manager->getColumnValuesUnique('car', $array);
+        $results = $this->manager->getArrayColumnValuesUnique('car', $array);
         $this->assertEquals($results, $truth);
 
         $truth = [
@@ -56,7 +59,7 @@ class RecordManagerTest extends TestCase
             'orange'
         ];
 
-        $results = $this->manager->getColumnValuesUnique('fruit', $array);
+        $results = $this->manager->getArrayColumnValuesUnique('fruit', $array);
         $this->assertEquals($results, $truth);
 
         $truth = [
@@ -64,7 +67,7 @@ class RecordManagerTest extends TestCase
             'corn'
         ];
 
-        $results = $this->manager->getColumnValuesUnique('vegetable', $array);
+        $results = $this->manager->getArrayColumnValuesUnique('vegetable', $array);
         $this->assertEquals($results, $truth);
     }
 
@@ -159,6 +162,33 @@ class RecordManagerTest extends TestCase
 
         $results = $this->manager->splitOnKeyUnique('fruit', $array);
         $this->assertEquals($results, $truth_fruit);
+    }
+
+    public function testRemoveEmptyValues(){
+        $array = ["car" => "chevy", "fruit"=> "", "vegetable" =>"spinach", "test" => "other", "tets2" => " "];
+        $truth = ["car" => "chevy", "vegetable" =>"spinach", "test" => "other"];
+        $results = $this->manager->removeEmptyValues($array);
+        $this->assertEquals($results, $truth);
+    }
+
+
+    public function testRemove2DEmptyValues(){
+        $array =[
+            ["car" => "chevy", "fruit"=> "", "vegetable" =>"spinach"],
+            ["car"=>"ford", "fruit"=>"", "vegetable" => "kale"],
+            ["car" => "bmw", "fruit"=> "banana", "vegetable" =>""],
+            ["car"=>"", "fruit"=>"orange", "vegetable" => "peas"]
+        ];
+
+        $truth = [
+            ["car" => "chevy", "vegetable" =>"spinach"],
+            ["car"=>"ford", "vegetable" => "kale"],
+            ["car" => "bmw", "fruit"=> "banana"],
+            ["fruit"=>"orange", "vegetable" => "peas"]
+        ];
+
+        $results = $this->manager->remove2DEmptyValues($array);
+        $this->assertEquals($results, $truth);
     }
 
 }
