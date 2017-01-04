@@ -41,6 +41,30 @@ class RecordManager{
         return sql_cache($sql);
     }
 
+    // removes a column from an 2D array(non destructive)(rows must have all keys the same!)
+    public function dePluck($array, $key){
+        $out =[];
+        foreach($array as $row){
+            $temp = $row;
+            unset($temp[$key]);
+            $out[] = $temp;
+        }
+        return $out;
+    }
+
+    // removes columns from a 2D array(non destructive)(rows must have all keys the same!)
+    function dePlucks($array, $key_array){
+        $out =[];
+        foreach($array as $row){
+            $temp = $row;
+            foreach ($key_array as $key) {
+                unset($temp[$key]);
+            }
+            $out[] = $temp;
+        }
+        return $out;
+    }
+
     /*
      * The following group of functions are tested by test/RecordManagerTest.php
      * Some models are built on top of them so I wanted a minimum of robustness.

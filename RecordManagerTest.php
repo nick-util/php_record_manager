@@ -15,6 +15,52 @@ class RecordManagerTest extends TestCase
         $this->manager = new RecordManager();
     }
 
+
+    public function testDePluck(){
+        $array = [
+            ["car" => "chevy", "fruit"=> "apple", "vegetable" =>"spinach"],
+            ["car"=>"ford", "fruit"=>"pear", "vegetable" => "kale"],
+            ["car" => "bmw", "fruit"=> "banana", "vegetable" =>"corn"],
+            ["car"=>"jeep", "fruit"=>"orange", "vegetable" => "peas"]
+        ];
+
+        $truth = [
+            ["fruit"=> "apple", "vegetable" =>"spinach"],
+            ["fruit"=>"pear", "vegetable" => "kale"],
+            ["fruit"=> "banana", "vegetable" =>"corn"],
+            ["fruit"=>"orange", "vegetable" => "peas"]
+        ];
+
+
+
+        $results = $this->manager->dePluck($array, 'car');
+        echo var_dump($results);
+        $this->assertEquals($results, $truth);
+    }
+
+
+    public function testDePlucks(){
+        $array = [
+            ["car" => "chevy", "fruit"=> "apple", "vegetable" =>"spinach"],
+            ["car"=>"ford", "fruit"=>"pear", "vegetable" => "kale"],
+            ["car" => "bmw", "fruit"=> "banana", "vegetable" =>"corn"],
+            ["car"=>"jeep", "fruit"=>"orange", "vegetable" => "peas"]
+        ];
+
+        $truth = [
+            ["fruit"=> "apple"],
+            ["fruit"=>"pear"],
+            ["fruit"=> "banana"],
+            ["fruit"=>"orange"]
+        ];
+
+
+
+        $results = $this->manager->dePlucks($array, ['car', 'vegetable']);
+        echo var_dump($results);
+        $this->assertEquals($results, $truth);
+    }
+
     public function testGetColumnValues()
     {
         $array = [
